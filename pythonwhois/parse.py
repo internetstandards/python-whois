@@ -555,37 +555,41 @@ def parse_raw_whois(raw_data, normalized=None, never_query_handles=True, handle_
 					data["nameservers"] = [match.strip()]
 		
 
-	data["contacts"] = parse_registrants(raw_data, never_query_handles, handle_server)
+	# XXX We only care for registrar. Disable uneeded functionality.
+
+	# Disable for now as it causes problems with infite loop with some
+	# registries.
+	# data["contacts"] = parse_registrants(raw_data, never_query_handles, handle_server)
 
 	# Parse dates
-	try:
-		data['expiration_date'] = remove_duplicates(data['expiration_date'])
-		data['expiration_date'] = parse_dates(data['expiration_date'])
-	except KeyError as e:
-		pass # Not present
+	# try:
+	# 	data['expiration_date'] = remove_duplicates(data['expiration_date'])
+	# 	data['expiration_date'] = parse_dates(data['expiration_date'])
+	# except KeyError as e:
+	# 	pass # Not present
 
-	try:
-		data['creation_date'] = remove_duplicates(data['creation_date'])
-		data['creation_date'] = parse_dates(data['creation_date'])
-	except KeyError as e:
-		pass # Not present
+	# try:
+	# 	data['creation_date'] = remove_duplicates(data['creation_date'])
+	# 	data['creation_date'] = parse_dates(data['creation_date'])
+	# except KeyError as e:
+	# 	pass # Not present
 
-	try:
-		data['updated_date'] = remove_duplicates(data['updated_date'])
-		data['updated_date'] = parse_dates(data['updated_date'])
-	except KeyError as e:
-		pass # Not present
+	# try:
+	# 	data['updated_date'] = remove_duplicates(data['updated_date'])
+	# 	data['updated_date'] = parse_dates(data['updated_date'])
+	# except KeyError as e:
+	# 	pass # Not present
 
-	try:
-		data['nameservers'] = remove_suffixes(data['nameservers'])
-		data['nameservers'] = remove_duplicates([ns.rstrip(".") for ns in data['nameservers']])
-	except KeyError as e:
-		pass # Not present
+	# try:
+	# 	data['nameservers'] = remove_suffixes(data['nameservers'])
+	# 	data['nameservers'] = remove_duplicates([ns.rstrip(".") for ns in data['nameservers']])
+	# except KeyError as e:
+	# 	pass # Not present
 
-	try:
-		data['emails'] = remove_duplicates(data['emails'])
-	except KeyError as e:
-		pass # Not present
+	# try:
+	# 	data['emails'] = remove_duplicates(data['emails'])
+	# except KeyError as e:
+	# 	pass # Not present
 
 	try:
 		data['registrar'] = remove_duplicates(data['registrar'])
@@ -593,23 +597,23 @@ def parse_raw_whois(raw_data, normalized=None, never_query_handles=True, handle_
 		pass # Not present
 
 	# Remove e-mail addresses if they are already listed for any of the contacts
-	known_emails = []
-	for contact in ("registrant", "tech", "admin", "billing"):
-		if data["contacts"][contact] is not None:
-			try:
-				known_emails.append(data["contacts"][contact]["email"])
-			except KeyError as e:
-				pass # No e-mail recorded for this contact...
-	try:
-		data['emails'] = [email for email in data["emails"] if email not in known_emails]
-	except KeyError as e:
-		pass # Not present
+	# known_emails = []
+	# for contact in ("registrant", "tech", "admin", "billing"):
+	# 	if data["contacts"][contact] is not None:
+	# 		try:
+	# 			known_emails.append(data["contacts"][contact]["email"])
+	# 		except KeyError as e:
+	# 			pass # No e-mail recorded for this contact...
+	# try:
+	# 	data['emails'] = [email for email in data["emails"] if email not in known_emails]
+	# except KeyError as e:
+	# 	pass # Not present
 
 	for key in list(data.keys()):
 		if data[key] is None or len(data[key]) == 0:
 			del data[key]
 
-	data["raw"] = raw_data
+	# data["raw"] = raw_data
 
 	if normalized != []:
 		data = normalize_data(data, normalized)
