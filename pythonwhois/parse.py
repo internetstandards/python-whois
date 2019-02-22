@@ -1,4 +1,5 @@
 from __future__ import print_function
+from collections import defaultdict
 import re, sys, datetime, csv, pkgutil
 from . import net, shared
 
@@ -432,7 +433,7 @@ else:
 
 def parse_raw_whois(raw_data, normalized=None, never_query_handles=True, handle_server=""):
 	normalized = normalized or []
-	data = {}
+	data = defaultdict(list)
 
 	raw_data = [segment.replace("\r", "") for segment in raw_data] # Carriage returns are the devil
 
