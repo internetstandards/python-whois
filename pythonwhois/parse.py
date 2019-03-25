@@ -452,108 +452,120 @@ def parse_raw_whois(raw_data, normalized=None, never_query_handles=True, handle_
 								except KeyError as e:
 									data[rule_key] = [val]
 
+		# XXX We only care for registrar. Disable uneeded functionality.
 		# Whois.com is a bit special... Fabulous.com also seems to use this format. As do some others.
-		match = re.search("^\s?Name\s?[Ss]ervers:?\s*\n((?:\s*.+\n)+?\s?)\n", segment, re.MULTILINE)
-		if match is not None:
-			chunk = match.group(1)
-			for match in re.findall("[ ]*(.+)\n", chunk):
-				if match.strip() != "":
-					if not re.match("^[a-zA-Z]+:", match):
-						try:
-							data["nameservers"].append(match.strip())
-						except KeyError as e:
-							data["nameservers"] = [match.strip()]
+		# match = re.search("^\s?Name\s?[Ss]ervers:?\s*\n((?:\s*.+\n)+?\s?)\n", segment, re.MULTILINE)
+		# if match is not None:
+		# 	chunk = match.group(1)
+		# 	for match in re.findall("[ ]*(.+)\n", chunk):
+		# 		if match.strip() != "":
+		# 			if not re.match("^[a-zA-Z]+:", match):
+		# 				try:
+		# 					data["nameservers"].append(match.strip())
+		# 				except KeyError as e:
+		# 					data["nameservers"] = [match.strip()]
 		# Nominet also needs some special attention
 		match = re.search("    Registrar:\n        (.+)\n", segment)
 		if match is not None:
 			data["registrar"] = [match.group(1).strip()]
-		match = re.search("    Registration status:\n        (.+)\n", segment)
-		if match is not None:
-			data["status"] = [match.group(1).strip()]
-		match = re.search("    Name servers:\n([\s\S]*?\n)\n", segment)
-		if match is not None:
-			chunk = match.group(1)
-			for match in re.findall("        (.+)\n", chunk):
-				match = match.split()[0]
-				try:
-					data["nameservers"].append(match.strip())
-				except KeyError as e:
-					data["nameservers"] = [match.strip()]
+		# XXX We only care for registrar. Disable uneeded functionality.
+		# match = re.search("    Registration status:\n        (.+)\n", segment)
+		# if match is not None:
+		# 	data["status"] = [match.group(1).strip()]
+		# XXX We only care for registrar. Disable uneeded functionality.
+		# match = re.search("    Name servers:\n([\s\S]*?\n)\n", segment)
+		# if match is not None:
+		# 	chunk = match.group(1)
+		# 	for match in re.findall("        (.+)\n", chunk):
+		# 		match = match.split()[0]
+		# 		try:
+		# 			data["nameservers"].append(match.strip())
+		# 		except KeyError as e:
+		# 			data["nameservers"] = [match.strip()]
 		# janet (.ac.uk) is kinda like Nominet, but also kinda not
 		match = re.search("Registered By:\n\t(.+)\n", segment)
 		if match is not None:
 			data["registrar"] = [match.group(1).strip()]
-		match = re.search("Entry created:\n\t(.+)\n", segment)
-		if match is not None:
-			data["creation_date"] = [match.group(1).strip()]
-		match = re.search("Renewal date:\n\t(.+)\n", segment)
-		if match is not None:
-			data["expiration_date"] = [match.group(1).strip()]
-		match = re.search("Entry updated:\n\t(.+)\n", segment)
-		if match is not None:
-			data["updated_date"] = [match.group(1).strip()]
-		match = re.search("Servers:([\s\S]*?\n)\n", segment)
-		if match is not None:
-			chunk = match.group(1)
-			for match in re.findall("\t(.+)\n", chunk):
-				match = match.split()[0]
-				try:
-					data["nameservers"].append(match.strip())
-				except KeyError as e:
-					data["nameservers"] = [match.strip()]
+		# XXX We only care for registrar. Disable uneeded functionality.
+		# match = re.search("Entry created:\n\t(.+)\n", segment)
+		# if match is not None:
+		# 	data["creation_date"] = [match.group(1).strip()]
+		# XXX We only care for registrar. Disable uneeded functionality.
+		# match = re.search("Renewal date:\n\t(.+)\n", segment)
+		# if match is not None:
+		# 	data["expiration_date"] = [match.group(1).strip()]
+		# XXX We only care for registrar. Disable uneeded functionality.
+		# match = re.search("Entry updated:\n\t(.+)\n", segment)
+		# if match is not None:
+		# 	data["updated_date"] = [match.group(1).strip()]
+		# XXX We only care for registrar. Disable uneeded functionality.
+		# match = re.search("Servers:([\s\S]*?\n)\n", segment)
+		# if match is not None:
+		# 	chunk = match.group(1)
+		# 	for match in re.findall("\t(.+)\n", chunk):
+		# 		match = match.split()[0]
+		# 		try:
+		# 			data["nameservers"].append(match.strip())
+		# 		except KeyError as e:
+		# 			data["nameservers"] = [match.strip()]
+		# XXX We only care for registrar. Disable uneeded functionality.
 		# .am plays the same game
-		match = re.search("   DNS servers:([\s\S]*?\n)\n", segment)
-		if match is not None:
-			chunk = match.group(1)
-			for match in re.findall("      (.+)\n", chunk):
-				match = match.split()[0]
-				try:
-					data["nameservers"].append(match.strip())
-				except KeyError as e:
-					data["nameservers"] = [match.strip()]
+		# match = re.search("   DNS servers:([\s\S]*?\n)\n", segment)
+		# if match is not None:
+		# 	chunk = match.group(1)
+		# 	for match in re.findall("      (.+)\n", chunk):
+		# 		match = match.split()[0]
+		# 		try:
+		# 			data["nameservers"].append(match.strip())
+		# 		except KeyError as e:
+		# 			data["nameservers"] = [match.strip()]
 		# SIDN isn't very standard either. And EURid uses a similar format.
 		match = re.search("Registrar:\n\s+(?:Name:\s*)?(\S.*)", segment)
 		if match is not None:
 			data["registrar"].insert(0, match.group(1).strip())
-		match = re.search("(?:Domain nameservers|Name servers):([\s\S]*?\n)\n", segment)
-		if match is not None:
-			chunk = match.group(1)
-			for match in re.findall("\s+?(.+)\n", chunk):
-				match = match.split()[0]
-				# Prevent nameserver aliases from being picked up.
-				if not match.startswith("[") and not match.endswith("]"):
-					try:
-						data["nameservers"].append(match.strip())
-					except KeyError as e:
-						data["nameservers"] = [match.strip()]
+		# XXX We only care for registrar. Disable uneeded functionality.
+		# match = re.search("(?:Domain nameservers|Name servers):([\s\S]*?\n)\n", segment)
+		# if match is not None:
+		# 	chunk = match.group(1)
+		# 	for match in re.findall("\s+?(.+)\n", chunk):
+		# 		match = match.split()[0]
+		# 		# Prevent nameserver aliases from being picked up.
+		# 		if not match.startswith("[") and not match.endswith("]"):
+		# 			try:
+		# 				data["nameservers"].append(match.strip())
+		# 			except KeyError as e:
+		# 				data["nameservers"] = [match.strip()]
+		# XXX We only care for registrar. Disable uneeded functionality.
 		# The .ie WHOIS server puts ambiguous status information in an unhelpful order
-		match = re.search('ren-status:\s*(.+)', segment)
-		if match is not None:
-			data["status"].insert(0, match.group(1).strip())
+		# match = re.search('ren-status:\s*(.+)', segment)
+		# if match is not None:
+		# 	data["status"].insert(0, match.group(1).strip())
 		# nic.it gives us the registrar in a multi-line format...
 		match = re.search('Registrar\n  Organization:     (.+)\n', segment)
 		if match is not None:
 			data["registrar"] = [match.group(1).strip()]
+		# XXX We only care for registrar. Disable uneeded functionality.
 		# HKDNR (.hk) provides a weird nameserver format with too much whitespace
-		match = re.search("Name Servers Information:\n\n([\s\S]*?\n)\n", segment)
-		if match is not None:
-			chunk = match.group(1)
-			for match in re.findall("(.+)\n", chunk):
-				match = match.split()[0]
-				try:
-					data["nameservers"].append(match.strip())
-				except KeyError as e:
-					data["nameservers"] = [match.strip()]
+		# match = re.search("Name Servers Information:\n\n([\s\S]*?\n)\n", segment)
+		# if match is not None:
+		# 	chunk = match.group(1)
+		# 	for match in re.findall("(.+)\n", chunk):
+		# 		match = match.split()[0]
+		# 		try:
+		# 			data["nameservers"].append(match.strip())
+		# 		except KeyError as e:
+		# 			data["nameservers"] = [match.strip()]
+		# XXX We only care for registrar. Disable uneeded functionality.
 		# ... and again for TWNIC.
-		match = re.search("   Domain servers in listed order:\n([\s\S]*?\n)\n", segment)
-		if match is not None:
-			chunk = match.group(1)
-			for match in re.findall("      (.+)\n", chunk):
-				match = match.split()[0]
-				try:
-					data["nameservers"].append(match.strip())
-				except KeyError as e:
-					data["nameservers"] = [match.strip()]
+		# match = re.search("   Domain servers in listed order:\n([\s\S]*?\n)\n", segment)
+		# if match is not None:
+		# 	chunk = match.group(1)
+		# 	for match in re.findall("      (.+)\n", chunk):
+		# 		match = match.split()[0]
+		# 		try:
+		# 			data["nameservers"].append(match.strip())
+		# 		except KeyError as e:
+		# 			data["nameservers"] = [match.strip()]
 		
 
 	# XXX We only care for registrar. Disable uneeded functionality.
