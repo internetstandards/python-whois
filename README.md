@@ -8,7 +8,7 @@ HOW TO KEEP THE FORK UP-TO-DATE
 
 2. If you need to sync with upstream on a previously cloned repo run:
    ```
-   git fetch upstream
+   git fetch upstream master
    git checkout master
    git merge upstream/master
    git push
