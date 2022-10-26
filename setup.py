@@ -1,8 +1,8 @@
 from setuptools import setup
 
-setup(name='pythonwhois',
-      version='2.4.3',
-      description='Module for retrieving and parsing the WHOIS data for a domain. Supports most domains. No dependencies.',
+setup(name='pythonwhois-internet.nl',
+      version='1.0.0',
+      description='Internetnl fork of python-whois 2.4.3: Module for retrieving and parsing the WHOIS data for a domain. Supports most domains. No dependencies.',
       author='Sven Slootweg',
       author_email='pythonwhois@cryto.net',
       url='http://cryto.net/pythonwhois',
